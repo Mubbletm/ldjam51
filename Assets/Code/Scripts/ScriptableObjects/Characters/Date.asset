@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf27e2c64ed9f904ea535a28b28eeecb, type: 3}
+  m_Name: Date
+  m_EditorClassIdentifier: 
+  name: Date
+  defaultTalkingSpeed: 2
+  defaultLoudness: 0.5
+  characterColor: {r: 0.8584906, g: 0.6033731, b: 0.82928014, a: 1}

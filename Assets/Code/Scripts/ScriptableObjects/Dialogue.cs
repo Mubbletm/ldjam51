@@ -9,5 +9,4 @@ public class Dialogue : ScriptableObject
     public float timeOnScreen;
     public float readTime;
     public float loudness;
-    public int priority;
 }
