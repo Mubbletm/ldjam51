@@ -9,14 +9,7 @@ public class BubbleManager : MonoBehaviour
     [SerializeField]
     private GameObject player;
     [SerializeField]
-    private GameObject cameraControllerGameObject;
-
     private CameraController cameraController;
-
-    void Start()
-    {
-        cameraController = cameraControllerGameObject.transform.GetComponent<CameraController>();
-    }
 
     // Update is called once per frame
     void Update()

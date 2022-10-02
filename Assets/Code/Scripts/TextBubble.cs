@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
+[RequireComponent(typeof(RectTransform))]
 public class TextBubble : MonoBehaviour
 {
     [SerializeField] public float timeOnScreen;        // How long the text bubble will be on screen. (s)
@@ -15,8 +16,11 @@ public class TextBubble : MonoBehaviour
     [SerializeField] public Color backdropColor;
     [Space(10)]
     [SerializeField] public UnityEvent onDestroy;
+    [Space(10)]
+    [SerializeField] public UnityEvent onTimeout;
     [Space(30)]
     [SerializeField] private int bubbleBorderClearance;
+    [SerializeField] private float timeout;
     [SerializeField] [Range(0.0f, 1.0f)] private float smallestSize;
     [SerializeField] private float smallestFontSize;
     [SerializeField] private float biggestFontSize;
@@ -24,10 +28,9 @@ public class TextBubble : MonoBehaviour
     [SerializeField] [Range(0.0f, 10.0f)] private float smoothness = .5f;
     [Space(30)]
     [SerializeField] public GameObject origin;         // The gameobject that triggered the text bubble.
-    [SerializeField] private GameObject cameraControllerGameObject;
+    [SerializeField] private CameraController cameraController;
     [SerializeField] private RectTransform UITransform;
 
-    private CameraController cameraController;
     private TextMeshProUGUI contentTextMesh;
     private Image bubbleImage;
     private RectTransform rectTransform;
@@ -36,12 +39,14 @@ public class TextBubble : MonoBehaviour
     private Vector3 oldPosition;
     private float typeSpeed;
 
+    private bool timedOut = false;
+    private int timeoutCounter = 0;
+
     void Start()
     {
         contentTextMesh = transform.Find("content").GetComponent<TextMeshProUGUI>();
         bubbleImage = transform.GetComponent<Image>();
         rectTransform = GetComponent<RectTransform>();
-        cameraController = cameraControllerGameObject.GetComponent<CameraController>();
 
         originalBubbleScale = rectTransform.localScale;
         originalFontSize = contentTextMesh.fontSize;
@@ -79,12 +84,24 @@ public class TextBubble : MonoBehaviour
         pos = Vector3.Lerp(oldPosition, pos, Time.deltaTime * smoothness);
         oldPosition = pos;
         rectTransform.position = pos;
-        
+    }
+
+    private void FixedUpdate()
+    {
+        if (contentTextMesh.text == "...") timeoutCounter++;
+        else timeoutCounter = 0;
+
+        if (timeoutCounter > Mathf.RoundToInt(timeout / Time.fixedDeltaTime))
+        {
+            timedOut = true;
+            Destroy(gameObject);
+        }
     }
 
     private void OnDestroy()
     {
-        onDestroy.Invoke();
+        if (!timedOut) onDestroy.Invoke();
+        else onTimeout.Invoke();
     }
 
     float adjustPositionToBorder(float sizeBorderSide, float sizeBubbleSide, float position)

@@ -9,4 +9,12 @@ public class Character : ScriptableObject
     public float defaultTalkingSpeed;
     public float defaultLoudness;
     public Color characterColor;
+
+    public Character(string name, float defaultTalkingSpeed, float defaultLoudness, Color characterColor)
+    {
+        this.name = name;
+        this.defaultTalkingSpeed = defaultTalkingSpeed;
+        this.defaultLoudness = defaultLoudness;
+        this.characterColor = characterColor;
+    }
 }
